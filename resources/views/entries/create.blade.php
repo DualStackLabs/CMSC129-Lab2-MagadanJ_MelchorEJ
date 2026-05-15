@@ -54,7 +54,16 @@
             <input type="file" name="image" class="w-full p-2 border rounded-xl bg-[#fff0f5]">
         </div>
 
-        <input type="hidden" name="category_id" value="1">
+        <div class="mb-4">
+            <label class="block text-slate-700 font-bold mb-2">Category</label>
+            <select name="category_id" required 
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#e22161] outline-none text-[#333] cursor-pointer">
+                <option value="">Select a Category...</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
 
         <button type="submit" class="w-full bg-[#e22161] text-white font-bold py-4 rounded-xl hover:bg-[#ce0d4d] transition duration-200 mt-4">
             Save Journal Entry

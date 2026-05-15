@@ -10,28 +10,17 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Create our required Category first (so the foreign key doesn't break)
-        $category = Category::create([
-            'name' => 'General Vibes',
-        ]);
-
-        // 2. Create some sample journal entries
+        $school = Category::create(['name' => 'School', 'color_theme' => 'emerald']); 
+        $work = Category::create(['name' => 'Work', 'color_theme' => 'blue']);
+        $personal = Category::create(['name' => 'Personal', 'color_theme' => 'pink']);
+        // 2. Create some sample journal entries assigned to these categories
         Entry::create([
             'title' => 'First Day of Vibecoding',
             'content' => 'Honestly, Laravel felt overwhelming at first, but the MVC structure is starting to click. I successfully set up my controllers and views today!',
             'mood' => 'Focused',
             'location' => 'Computer Lab',
             'is_favorite' => true,
-            'category_id' => $category->id,
-        ]);
-
-        Entry::create([
-            'title' => 'Stressed about finals',
-            'content' => 'So many projects due this week. I need to make sure my F2F defense for this journal app goes perfectly.',
-            'mood' => 'Stressed',
-            'location' => 'Library',
-            'is_favorite' => false,
-            'category_id' => $category->id,
+            'category_id' => $school->id, // Assigned to School
         ]);
 
         Entry::create([
@@ -40,7 +29,16 @@ class DatabaseSeeder extends Seeder
             'mood' => 'Happy',
             'location' => 'My Desk',
             'is_favorite' => true,
-            'category_id' => $category->id,
+            'category_id' => $work->id, // Assigned to Work
+        ]);
+
+        Entry::create([
+            'title' => 'Weekend Vibes',
+            'content' => 'Finally got some time to relax, watch movies, and just disconnect for a bit. Much needed rest.',
+            'mood' => 'Happy',
+            'location' => 'Home',
+            'is_favorite' => false,
+            'category_id' => $personal->id, // Assigned to Personal
         ]);
     }
 }

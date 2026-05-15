@@ -7,6 +7,15 @@
         <input type="text" name="search" placeholder="Search your thoughts..." value="{{ request('search') }}" 
             class="flex-1 border border-slate-200 bg-slate-50 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[#e22161] outline-none text-slate-700 transition-all">
         
+        <select name="category_id" class="border border-slate-200 bg-slate-50 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[#e22161] outline-none text-slate-700 cursor-pointer transition-all">
+            <option value="">Any Category</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
+        
         <select name="mood" class="border border-slate-200 bg-slate-50 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[#e22161] outline-none text-slate-700 cursor-pointer transition-all">
             <option value="">Any Mood</option>
             <option value="Happy" {{ request('mood') == 'Happy' ? 'selected' : '' }}>Happy</option>
@@ -55,6 +64,21 @@
             </p>
             
             <div class="flex flex-wrap gap-4 mt-3 text-sm text-slate-500 font-medium">
+                @php
+                    $theme = $entry->category->color_theme ?? 'slate';
+                    $bgClass = match($theme) {
+                        'indigo' => 'bg-indigo-50 text-indigo-600',
+                        'blue' => 'bg-blue-50 text-blue-600',
+                        'pink' => 'bg-pink-50 text-pink-600',
+                        'emerald' => 'bg-emerald-50 text-emerald-600',
+                        'amber' => 'bg-amber-50 text-amber-600',
+                        default => 'bg-slate-50 text-slate-600',
+                    };
+                @endphp
+            
+                <span class="flex items-center gap-1.5 {{ $bgClass }} px-2 py-1 rounded-md font-bold">
+                    <i class="ph ph-folder text-lg"></i> {{ $entry->category->name ?? 'Uncategorized' }}
+                </span>
                 <span class="flex items-center gap-1.5">
                     <i class="ph ph-smiley text-lg text-pink-400"></i> {{ $entry->mood }}
                 </span>

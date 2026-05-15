@@ -4,23 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Entry;
+use App\Models\Category;
 
 class EntryController extends Controller
 {
     // 1. SHOW THE DASHBOARD (Read)
+    // 1. SHOW THE DASHBOARD (Read)
     public function index(Request $request)
     {
-        $query = Entry::query();
+        $query = Entry::with('category'); // Eager load category
 
         // Search feature
         if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%')
+            $query->where(function($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
                   ->orWhere('content', 'like', '%' . $request->search . '%');
+            });
         }
 
-        // Filter feature
+        // Mood Filter
         if ($request->filled('mood')) {
             $query->where('mood', $request->mood);
+        }
+
+        // NEW: Category Filter
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
         }
 
         if ($request->filled('is_favorite') == '1') {
@@ -28,13 +37,16 @@ class EntryController extends Controller
         }
 
         $entries = $query->latest()->get();
-        return view('entries.index', compact('entries'));
+        $categories = \App\Models\Category::all(); // Fetch categories for the search bar
+
+        return view('entries.index', compact('entries', 'categories'));
     }
 
     // 2. SHOW THE CREATE FORM
     public function create()
     {
-        return view('entries.create');
+        $categories = Category::all(); // Fetch all categories
+        return view('entries.create', compact('categories'));
     }
 
     // 3. SAVE THE NEW ENTRY (Create)
@@ -47,7 +59,7 @@ class EntryController extends Controller
             'mood' => 'required',
             'location' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:10240', // Validation is here
-            'category_id' => 'required|integer'
+            'category_id' => 'required|exists:categories,id'
         ]);
 
         // --- ADD THIS LOGIC ---
@@ -67,7 +79,8 @@ class EntryController extends Controller
 
      public function edit(Entry $entry)
     {
-        return view('entries.edit', compact('entry'));
+        $categories = Category::all(); // Fetch all categories
+        return view('entries.edit', compact('entry', 'categories'));
     }
 
 
@@ -80,7 +93,7 @@ class EntryController extends Controller
             'mood' => 'required',
             'location' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:10240',
-            'category_id' => 'required|integer'
+           'category_id' => 'required|exists:categories,id'
         ]);
 
         // --- ADD THIS LOGIC ---

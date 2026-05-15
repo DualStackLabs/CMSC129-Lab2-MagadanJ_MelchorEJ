@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Journal App</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            safelist: [
+                'bg-indigo-50', 'text-indigo-600',
+                'bg-blue-50', 'text-blue-600',
+                'bg-pink-50', 'text-pink-600',
+                'bg-emerald-50', 'text-emerald-600',
+                'bg-amber-50', 'text-amber-600',
+                'bg-slate-50', 'text-slate-600'
+            ]
+        }
+    </script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body class="bg-white text-[#333] font-sans antialiased flex h-screen overflow-hidden">
