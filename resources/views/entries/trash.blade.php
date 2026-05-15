@@ -44,7 +44,7 @@
                     Originally written on {{ $entry->created_at->format('M d, Y') }}
                 </div>
                 
-                <div class="flex flex-col sm:flex-row gap-3 mt-4">
+                <div class="flex flex-col sm:flex-row gap-3">
                     <button type="button" 
                             onclick="confirmAction(this, 'Bring this entry back?', '#10b981')" 
                             class="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 px-5 py-2.5 rounded-xl text-sm font-bold tracking-tight transition-colors">
@@ -57,7 +57,7 @@
                     <button type="button" 
                             onclick="confirmAction(this, 'Delete this forever? This cannot be undone!', '#ef4444')" 
                             class="bg-red-50 text-red-700 hover:bg-red-100 px-5 py-2.5 rounded-xl text-sm font-bold tracking-tight transition-colors">
-                        Destroy
+                        <i class="ph ph-skull mr-1"></i> Destroy
                     </button>
                     <form action="{{ route('entries.forceDelete', $entry->id) }}" method="POST" class="hidden">
                         @csrf

@@ -115,11 +115,24 @@ class EntryController extends Controller
         return redirect('/entries')->with('success', 'Journal entry updated!');
     }
 
-    // 6. SOFT DELETE THE ENTRY (Delete)
     public function destroy(Entry $entry)
     {
         $entry->delete();
-        return redirect('/entries')->with('success', 'Entry moved to trash.');
+        
+        return redirect()->route('entries.index')->with('success', 'Entry moved to trash.');
+    }
+
+    public function forceDelete($id)
+    {
+        $entry = Entry::onlyTrashed()->findOrFail($id);
+
+        if ($entry->image) {
+            \Storage::disk('public')->delete($entry->image);
+        }
+
+        $entry->forceDelete();
+
+        return redirect()->route('entries.trash')->with('success', 'Entry permanently deleted.');
     }
 
     public function trash()

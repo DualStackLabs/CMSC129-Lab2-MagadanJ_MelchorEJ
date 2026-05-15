@@ -100,7 +100,7 @@
                         class="bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors">
                     Delete
                 </button>
-                <form action="/entries/{{ $entry->id }}" method="POST" class="hidden">
+                <form action="{{ route('entries.destroy', $entry) }}" method="POST" class="hidden">
                     @csrf
                     @method('DELETE')
                 </form>
